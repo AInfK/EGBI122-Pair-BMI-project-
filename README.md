@@ -1,4 +1,4 @@
-# BME Health Calculator Suite (Gradio 5.49) — README
+# BME Health Calculator Suite — README
 
 A 3-tab health toolkit for **biomedical engineering students**.
 Runs locally with **Gradio 5.49** + **Matplotlib** and stores everything **in memory** per session.
