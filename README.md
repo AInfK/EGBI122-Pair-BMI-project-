@@ -2,9 +2,9 @@
 
 **Student README for Submission**
 
-**Course:** *(EGBI122)*
-**Student:** *(1. Arnakorn Kajornsirisin)*
-             *(2. Watsananon Wongsurin)*
+**Course:** *EGBI122*.
+**Student:** *1. Arnakorn Kajornsirisin*.
+             *2. Watsananon Wongsurin*.
 ---
 
 ## 1) Executive Summary
