@@ -1,6 +1,6 @@
 # BME Health Calculator Suite (Gradio 5.49)
 
-**Student README for Submission**
+
 
 **Course:** *EGBI122*.
 
