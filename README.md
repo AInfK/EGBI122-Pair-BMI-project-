@@ -16,7 +16,7 @@ Use cases include personal health tracking, demonstrating basic biomedical calcu
 
 ---
 
-## 2) Learning Objectives (as a BME student)
+## 2) Learning Objectives
 
 1. Implement biomedical formulas (BMI, BMR/TDEE) correctly in Python.
 2. Enforce data integrity (single daily records, numeric checks, range validation).
@@ -222,5 +222,5 @@ This tool is for **education and personal tracking only**. It does **not** diagn
 
 ---
 
-## 14) Lisence 
-* We use lisence in form of MIT lisence.
+## 14) License
+* We use lisence in form of MIT license.
