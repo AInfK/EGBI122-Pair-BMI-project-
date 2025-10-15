@@ -128,25 +128,62 @@ python app.py   # or your filename
 
 ## 6) Algorithms & Equations
 
-* **BMI**:
-  [ \text{BMI} = \frac{\text{weight (kg)}}{\text{height (m)}^2} ]
-  Category thresholds used in the UI bands: Underweight < 18.5, Normal 18.5–24.9, Overweight 25–29.9, Obese ≥ 30.
+### **1. Body Mass Index (BMI)**  
+**Formula:**  
+BMI = weight (kg) / height (m)<sup>2</sup>
 
-* **BMR (Harris–Benedict)**:
+**Categories:**  
+| Category | BMI Range |  
+|:--|:--:|  
+| Underweight | &lt; 18.5 |  
+| Normal | 18.5 – 24.9 |  
+| Overweight | 25 – 29.9 |  
+| Obese | ≥ 30 |  
 
-  * Male: ( \text{BMR} = 88.362 + 13.397W + 4.799H - 5.677A )
-  * Female: ( \text{BMR} = 447.593 + 9.247W + 3.098H - 4.330A )
-    where (W)=kg, (H)=cm, (A)=years.
+*Used to classify body weight relative to height.*
 
-* **TDEE**:
-  [ \text{TDEE} = \text{BMR} \times \text{Activity Factor}  ]
-  Activity factors implemented: 1.2, 1.375, 1.55, 1.725, 1.9.
+---
 
-* **Goal targets** (daily kcal):
+### **2. Basal Metabolic Rate (BMR)** — _Harris–Benedict Equation_  
 
-  * Lose: ( 0.80 \times \text{TDEE} )
-  * Maintenance: ( 1.00 \times \text{TDEE} )
-  * Gain: ( 1.15 \times \text{TDEE} )
+**Male:**  
+BMR = 88.362 + (13.397 × W) + (4.799 × H) − (5.677 × A)  
+
+**Female:**  
+BMR = 447.593 + (9.247 × W) + (3.098 × H) − (4.330 × A)  
+
+Where:  
+- W = weight (kg)  
+- H = height (cm)  
+- A = age (years)  
+
+*Represents the energy your body burns at rest.*
+
+---
+
+### **3. Total Daily Energy Expenditure (TDEE)**  
+**Formula:**  
+TDEE = BMR × Activity Factor  
+
+**Activity Factors:**  
+| Level | Description | Factor |  
+|:--|:--|:--:|  
+| Sedentary | Little/no exercise | 1.2 |  
+| Light | Light exercise 1–3 days/week | 1.375 |  
+| Moderate | Moderate exercise 3–5 days/week | 1.55 |  
+| Active | Hard exercise 6–7 days/week | 1.725 |  
+| Very Active | Physical job or intense training | 1.9 |  
+
+*TDEE reflects total calories burned per day including activity.*
+
+---
+
+### **4. Goal Calorie Targets**  
+| Goal | Formula | Description |  
+|:--|:--|:--|  
+| Lose Weight | 0.80 × TDEE | ~20 % calorie deficit |  
+| Maintain Weight | 1.00 × TDEE | Maintain current body weight |  
+| Gain Weight | 1.15 × TDEE | ~15 % calorie surplus |  
 
 ---
 
@@ -161,7 +198,7 @@ python app.py   # or your filename
   * BMI: 10–70
   * Age: 10–80
 * **Error/Info toasts** are centered to improve visibility.
-* ![Error info](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/main/Picture/Popup.png)
+  ![Error info](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/main/Picture/Popup.png)
 * **Food tables** are per-user and include a “-” sentinel choice.
 
 ---
