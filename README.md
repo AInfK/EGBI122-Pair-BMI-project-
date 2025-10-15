@@ -170,7 +170,6 @@ python app.py   # or your filename
 ---
 
 ## 8) UI/UX Notes
- ![Fullweb](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/main/Picture/graph%20tab%203.png)
 * **Neon “game vibe” theme** for engagement.
 * **BMI plot** includes colored bands for category context.
 * **Food 7-day bar chart** displays numeric labels + target line (from TDEE × goal).
