@@ -115,7 +115,7 @@ python app.py   # or your filename
 
 ### 3) Food Tracker
 ![UI example](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/bc4ac9958e7a5a35e336219037813ee6808e081f/Picture/Tab%203.png)
-![graph example](https://github.com/AInfK/EGBI122-Pair-BMI-project-/upload/main/Picture#:~:text=Screenshot%202025%2D10%2D16%20005500.png)
+![graph example](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/main/Picture/graph%20epic)
 
 1. Select a **date that has TDEE** from Tab 2.
 2. Choose a **Goal** (Lose/Maintenance/Gain) → the **target kcal** updates automatically.
