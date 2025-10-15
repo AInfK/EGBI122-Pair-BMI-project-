@@ -2,11 +2,9 @@
 
 **Student README for Submission**
 
-**Course:** *(fill in: e.g., EGBI122 / BME Programming Applications)*
-**Instructor:** *(fill in)*
-**Student:** *(your name / ID)*
-**Date:** *(Oct 15, 2025)*
-
+**Course:** *(EGBI122)*
+**Student:** *(1. Arnakorn Kajornsirisin)*
+             *(2. Watsananon Wongsurin)*
 ---
 
 ## 1) Executive Summary
@@ -92,6 +90,7 @@ python app.py   # or your filename
 ### 0) Login
 
 1. Enter a **Username** → click **Log in**. (All data is stored under this username during the session.)
+
 
 ### 1) BMI Calculator
 
@@ -187,8 +186,6 @@ python app.py   # or your filename
   * Negative/NaN calories on custom food → rejected.
   * TDEE not available for a date → tracker shows target = 0 with guidance.
 
-`/assets` 
-
 ---
 
 ## 10) Limitations
@@ -224,9 +221,5 @@ This tool is for **education and personal tracking only**. It does **not** diagn
 
 ---
 
-## 14) Academic Integrity
-
-I implemented this project to practice biomedical computation and interface design. All included formulas (BMI and Harris–Benedict) are standard in the literature. I tested the application and documented the methods, assumptions, and limitations. If additional sources are required, I can append citations.
-
----
-
+## 14) Lisence 
+* We use lisence in form of MIT lisence.
