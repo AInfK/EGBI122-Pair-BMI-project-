@@ -129,9 +129,7 @@ python app.py   # or your filename
 ## 6) Algorithms & Equations
 
 * **BMI**:
-  [
-  \text{BMI} = \frac{\text{weight (kg)}}{\text{height (m)}^2}
-  ]
+  [ \text{BMI} = \frac{\text{weight (kg)}}{\text{height (m)}^2} ]
   Category thresholds used in the UI bands: Underweight < 18.5, Normal 18.5–24.9, Overweight 25–29.9, Obese ≥ 30.
 
 * **BMR (Harris–Benedict)**:
@@ -141,9 +139,7 @@ python app.py   # or your filename
     where (W)=kg, (H)=cm, (A)=years.
 
 * **TDEE**:
-  [
-  \text{TDEE} = \text{BMR} \times \text{Activity Factor}
-  ]
+  [ \text{TDEE} = \text{BMR} \times \text{Activity Factor}  ]
   Activity factors implemented: 1.2, 1.375, 1.55, 1.725, 1.9.
 
 * **Goal targets** (daily kcal):
@@ -165,6 +161,7 @@ python app.py   # or your filename
   * BMI: 10–70
   * Age: 10–80
 * **Error/Info toasts** are centered to improve visibility.
+* ![Error info](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/main/Picture/Popup.png)
 * **Food tables** are per-user and include a “-” sentinel choice.
 
 ---
