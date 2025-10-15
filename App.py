@@ -62,7 +62,6 @@ def ensure_user(username):
             "bmi_records": {},
             "tdee_records": {},
             "food_log": {},
-            # per-user food tables (start with defaults)
             "foods": {
                 "MAIN": {
                     "-": 0,
@@ -100,7 +99,6 @@ def ensure_user(username):
 # Charts
 # -----------------------------
 def plot_bmi_series(series):
-    # BMI chart w/ category bands + labels
     import matplotlib.pyplot as plt
     plt.figure(figsize=(7.6, 3.8))
     ax = plt.gca()
@@ -132,12 +130,11 @@ def plot_bmi_series(series):
 def compute_target_from_goal(tdee: float, goal: str) -> float:
     if not tdee or tdee <= 0:
         return 0.0
-    # simple, clear multipliers
+
     m = {"Lose (-20%)": 0.80, "Maintenance (0%)": 1.00, "Gain (+15%)": 1.15}.get(goal, 1.00)
     return tdee * m
 
 def plot_food_week(log, ref_date_str, target_kcal):
-    # 7-day window ending at selected date; target line & value labels
     import matplotlib.pyplot as plt
     if ref_date_str:
         try:
@@ -185,13 +182,12 @@ def _food_choices(user):
     return list(f["MAIN"].keys()), list(f["DESSERT"].keys()), list(f["BEVERAGE"].keys())
 
 # -----------------------------
-# Login / Logout (unchanged behavior)
+# Login / Logout 
 # -----------------------------
 def do_login(username):
     username = (username or "").strip()
     if not username:
         gr.Error("Please enter a username.")
-        # keep output shape consistent with wiring below
         blank_foods = [gr.update(choices=[])] * 9
         return (
             gr.update(value=None),
@@ -245,7 +241,7 @@ def do_logout():
     )
 
 # -----------------------------
-# Tab 1 — BMI (same as your last version)
+# Tab 1 — BMI 
 # -----------------------------
 ALLOWED = {"h_cm_min": 100, "h_cm_max": 250, "w_kg_min": 30, "w_kg_max": 200, "bmi_min": 10, "bmi_max": 70}
 
@@ -346,7 +342,7 @@ def bmi_clear_day(date_text):
             gr.update(choices=_choices_bmi(user)), gr.update(choices=_choices_tdee(user)))
 
 # -----------------------------
-# Tab 2 — BMR/TDEE (unchanged behavior from your last build)
+# Tab 2 — BMR/TDEE 
 # -----------------------------
 ACTIVITY_FACTORS = {
     "Sedentary (little/no exercise)": 1.2,
@@ -430,7 +426,7 @@ def t2_compute_and_save(t2_date_locked, gender, age, activity, height_cm, weight
     return ("Calculated & saved.", gr.update(value=html), gr.update(choices=_choices_tdee(user)), gr.update(visible=False, value=None))
 
 # -----------------------------
-# Tab 3 — Food Tracker (UPGRADED)
+# Tab 3 — Food Tracker
 # -----------------------------
 GOALS = ["Lose (-20%)", "Maintenance (0%)", "Gain (+15%)"]
 
@@ -479,7 +475,6 @@ def ft_add_custom_food(name, ftype, kcal,
         return "Calories must be a positive number.", *updates
 
     table_key = {"Main": "MAIN", "Dessert": "DESSERT", "Beverage": "BEVERAGE"}[ftype]
-    # put newest near top by recreating dict with new item after '-'
     tbl = users[user]["foods"][table_key]
     if name in tbl:
         gr.Info("Updated existing food calories.")
@@ -492,7 +487,6 @@ def ft_add_custom_food(name, ftype, kcal,
 
     main_c, des_c, bev_c = _food_choices(user)
     gr.Info(f"Added '{name}' to {ftype}.")
-    # refresh all 9 dropdowns, keep current selections if still valid
     def pick(value, choices):
         return value if value in choices else "-"
     return (
@@ -583,7 +577,7 @@ def ft_clear_all(goal_choice):
     return (0, "Cleared log.", plot_food_week(users[user]["food_log"], None, target))
 
 # -----------------------------
-# Custom CSS (game vibe + centered toasts)
+# Custom CSS 
 # -----------------------------
 CSS = """
 :root { --neon: #39ff14; --neon2: #ff9f1c; --bg: #0b1020; --panel: #121735; --text: #d9e7ff; }
@@ -633,7 +627,7 @@ with gr.Blocks(title="BME Health Calculator", css=CSS) as demo:
     app_panel = gr.Group(visible=False)
 
     with app_panel:
-        # --- Tab 1 (unchanged UI) ---
+        # --- Tab 1  ---
         with gr.Tab("BMI Calculator"):
             gr.Markdown("### Record and visualize BMI (one record per day)")
             with gr.Row():
@@ -653,7 +647,7 @@ with gr.Blocks(title="BME Health Calculator", css=CSS) as demo:
             view_bmi_btn = gr.Button("View selected date summary")
             view_bmi_out = gr.Markdown()
 
-        # --- Tab 2 (unchanged UI, locked date) ---
+        # --- Tab 2  ---
         with gr.Tab("Metabolic Rate (BMR/TDEE)"):
             gr.Markdown("### Select a BMI date (auto loads H/W), then compute BMR/TDEE")
             with gr.Row():
@@ -672,7 +666,7 @@ with gr.Blocks(title="BME Health Calculator", css=CSS) as demo:
             compute_btn = gr.Button("Compute & Save TDEE", variant="primary")
             t2_big_output = gr.HTML(label="Results")
 
-        # --- Tab 3 (UPGRADED) ---
+        # --- Tab 3  ---
         with gr.Tab("Food Tracker"):
             gr.Markdown("### Pick a TDEE date (auto links) — 3 meals × (Main, Dessert, Beverage)")
 
@@ -725,7 +719,7 @@ with gr.Blocks(title="BME Health Calculator", css=CSS) as demo:
     # -----------------------------
     # Wiring
     # -----------------------------
-    # Login/Logout: also refresh 9 meal dropdowns
+    # Login/Logout
     login_btn.click(
         do_login, inputs=[username],
         outputs=[username, app_panel, login_info, bmi_plot, bmi_dates_for_tab1, link_date, ft_date_dd, t2_big_output,
@@ -762,18 +756,15 @@ with gr.Blocks(title="BME Health Calculator", css=CSS) as demo:
         outputs=[login_info, t2_big_output, ft_date_dd, confirm_age_ok],
     )
 
-    # Tab 3 — auto-link on date/goal change
+    # Tab 3 
     ft_date_dd.change(ft_on_date_or_goal_change, inputs=[ft_date_dd, goal_choice], outputs=[tdee_link_status, tdee_val, target_label, chart_out])
     goal_choice.change(ft_on_date_or_goal_change, inputs=[ft_date_dd, goal_choice], outputs=[tdee_link_status, tdee_val, target_label, chart_out])
 
-    # Tab 3 — add custom food then refresh all meal dropdowns
     add_food_btn.click(
         ft_add_custom_food,
         inputs=[add_name, add_type, add_kcal, bm, bd, bb, lm, ld, lb, dm, dd, db],
         outputs=[add_food_msg, bm, bd, bb, lm, ld, lb, dm, dd, db],
     )
-
-    # Tab 3 — log/reset/clear with target-aware chart
     add_day_btn.click(
         ft_log_day,
         inputs=[ft_date_dd, tdee_val, goal_choice, bm, bd, bb, lm, ld, lb, dm, dd, db, manual],
