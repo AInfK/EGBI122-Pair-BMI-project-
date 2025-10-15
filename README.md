@@ -1,247 +1,189 @@
-# BME Health Calculator Suite 
+# BME Health Calculator Suite (Gradio 5.49) — README
 
-A neon-styled, multi-tab health app built with **Gradio 5.49** and **Matplotlib**.
-It runs **in-memory** (no database) and lets a user:
+A 3-tab health toolkit for **biomedical engineering students**.
+Runs locally with **Gradio 5.49** + **Matplotlib** and stores everything **in memory** per session.
 
-* Log in (per-user, temporary memory)
-* Record **BMI** once per day and see trends with category bands
-* Compute **BMR/TDEE** (Harris–Benedict) linked to a BMI date
-* Track food for **3 meals** + manual calories, with:
-
-  * **Custom foods** (name, type, kcal) saved per-user and added to all dropdowns instantly
-  * **Goal/target** (Lose, Maintenance, Gain) – progress bar and 7-day chart compare to **target** (derived from TDEE)
-* Enjoy a “video-game” dark neon UI with **centered** pop-up notifications
-
-> ⚠️ Data is cleared when the process stops—it’s intentionally **temporary**.
+> Tabs
+>
+> 1. **BMI Calculator** — one record/day, range checks, trend chart
+> 2. **BMR/TDEE** — Harris-Benedict + activity factors, linked to a BMI date
+> 3. **Food Tracker** — breakfast/lunch/dinner (Main/Dessert/Beverage), **custom foods**, **goal-based target**, 7-day chart
 
 ---
 
-## Table of Contents
+## ✨ Highlights
 
-* [Demo (Run Locally)](#demo-run-locally)
-* [Requirements](#requirements)
-* [Features](#features)
-* [How It Works](#how-it-works)
-* [User Flow](#user-flow)
-* [Validations & Guardrails](#validations--guardrails)
-* [UI/UX Details](#uiux-details)
-* [Folder / File](#folder--file)
-* [Customization](#customization)
-* [Troubleshooting](#troubleshooting)
-* [Roadmap Ideas](#roadmap-ideas)
-* [License](#license)
+* **Login first** → data keyed by username (no external DB)
+* **One BMI per day** with **out-of-range confirmation** (height/weight/BMI guardrails)
+* **Metric/Imperial** unit support
+* **Auto-link** BMI → **TDEE** on a chosen date
+* **Goals**: Lose (−20%), Maintenance (0%), Gain (+15%) → target kcal from TDEE
+* **➕ Custom Food** (name, type, kcal) appears instantly in all dropdowns
+* **7-day calories chart** with **target line** and values on bars
+* “**Clear this day**” & “**Clear week**” so wrong entries don’t persist
+* **Game-vibe UI** + centered toast notifications
 
 ---
 
-## Demo (Run Locally)
+## 🧰 Requirements
 
-1. **Create a virtual environment** (recommended):
+* **Python** 3.10+
+* **Gradio** 5.49
+* **Matplotlib**
+
+`requirements.txt` (optional):
+
+```
+gradio==5.49
+matplotlib
+```
+
+---
+
+## 🚀 Quickstart
+
+1. Create & activate a virtual environment
 
 ```bash
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# macOS/Linux:
+# Windows
+.venv\Scripts\activate
+# macOS/Linux
 source .venv/bin/activate
 ```
 
-2. **Install dependencies**:
+2. Install
 
 ```bash
-pip install gradio==5.49.0 matplotlib
+pip install -r requirements.txt
+# or
+pip install gradio==5.49 matplotlib
 ```
 
-3. **Run the app** (save the provided code to `app.py`):
+3. Run
 
 ```bash
-python app.py
+python app.py   # or whatever filename you saved
 ```
 
-4. Open the **local URL** printed in the terminal (usually `http://127.0.0.1:7860`).
+4. Open the URL that Gradio prints (e.g., [http://127.0.0.1:7860](http://127.0.0.1:7860))
 
 ---
 
-## Requirements
+## 🧭 How to Use
 
-* Python **3.9+** (tested most with 3.10/3.11)
-* Packages:
+### 0) Login
 
-  * `gradio==5.49.0`
-  * `matplotlib`
+* Enter a **Username** → **Log in**. You’ll see a welcome message and the tabs.
 
-> Using a different Gradio major version may break component APIs or CSS behavior.
+### 1) Tab: BMI Calculator
 
----
+* Choose **Unit System** (Metric or Imperial), enter **Height/Weight**, and **Date (YYYY-MM-DD)**.
+* Click **Save BMI for this day**. If values look unrealistic, the app asks you to **confirm** first.
+* **One record per day** (must clear before overwriting).
+* View any date’s summary or **Clear this day**.
+* The **BMI chart** shows category bands (Underweight/Normal/Overweight/Obese) with annotations.
 
-## Features
+### 2) Tab: Metabolic Rate (BMR/TDEE)
 
-### Tab 1 — BMI Calculator
+* Pick a **BMI date** (auto-loads that day’s height/weight).
+* Fill **Gender**, **Age (10–80)**, and **Activity** level.
+* Click **Compute & Save TDEE** to store a card with BMR & TDEE.
+* The saved **TDEE date** becomes available to Tab 3.
 
-* Input **unit system** (Metric or Imperial), **height**, **weight**, and **date**.
-* **One record per day**. If a date already exists, you must clear it first.
-* **Range checks**:
+### 3) Tab: Food Tracker (Upgraded)
 
-  * Height: **100–250 cm**
-  * Weight: **30–200 kg**
-  * BMI: **10–70**
-* If out of range, a **confirm** radio appears (hidden otherwise).
-  If confirmed **True**, data saves and adds *“You gotta be kidding me”* to the message.
-  If **False**, nothing is saved.
-* Chart shows **category bands** (Underweight/Normal/Overweight/Obese) with **point labels**.
-
-### Tab 2 — Metabolic Rate (BMR/TDEE)
-
-* **Select a BMI date** (dropdown). Height/weight **auto-load** from Tab 1 and the TDEE date **locks** to that selection.
-* Fill **gender**, **age**, and **activity level**; compute **BMR** and **TDEE**.
-* **Age validation**: must be **10–80**. If outside, a confirm radio appears; only saves on **True**.
-* Results are shown in a **stat card** (neon style).
-
-### Tab 3 — Food Tracker
-
-* **Pick a date with TDEE** (from Tab 2) and a **Goal/Target**:
-
-  * *Lose (-20%)*, *Maintenance (0%)*, *Gain (+15%)*
-    Target = TDEE × goal multiplier.
-* **Custom foods**: add *(name, type, calories)* once; it appears **immediately** in **all meal dropdowns** (Breakfast/Lunch/Dinner × Main/Dessert/Beverage).
-* **Daily summary**: totals by meal, **progress bar vs target**, and a **7-day chart** (window ends on the selected date) with:
-
-  * **Target line & label**
-  * **Bar value labels**
-  * Light grid and clear title
+* Select a **date with TDEE** and a **Goal**; the app computes a **Target kcal**.
+* For **Breakfast/Lunch/Dinner**, pick **Main/Dessert/Beverage**.
+* Use **➕ Add your own food** (name, type, kcal). It appears in all dropdowns immediately.
+* Optionally add **Manual extra calories**.
+* Click **➕ Log Day Total** → you’ll see a styled summary, **progress vs target**, and a **7-day chart**.
+* **♻️ Reset This Day** sets that date to 0 kcal; **🧹 Clear Week** clears the whole log.
 
 ---
 
-## How It Works
+## 🧠 For BME Students
 
-* **Temporary storage**:
+* **BMI** is a rough screening tool; it does **not** reflect body composition.
+* **BMR/TDEE** uses **Harris–Benedict** with standard activity multipliers; useful for trend-tracking but still an **estimate**.
+* Food kcal values are **approximate**; use **custom foods** for Thai dishes or lab-measured portions.
+* This app is for **learning and personal tracking**, not clinical diagnosis or treatment.
 
-  ```python
-  users = {
-    "<username>": {
-      "bmi_records": {"YYYY-MM-DD": {h_cm,w_kg,bmi}},
-      "tdee_records": {"YYYY-MM-DD": {bmr,tdee,gender,age,activity,h_cm,w_kg}},
-      "food_log": {"YYYY-MM-DD": total_kcal},
-      "foods": {"MAIN": {...}, "DESSERT": {...}, "BEVERAGE": {...}}
-    }
+---
+
+## 🗃️ In-Memory Data Model
+
+```python
+users = {
+  "<username>": {
+    "bmi_records": { "YYYY-MM-DD": {"h_cm": float, "w_kg": float, "bmi": float}, ... },
+    "tdee_records": { "YYYY-MM-DD": {"bmr": float, "tdee": float, "gender": str, "age": int, ...}, ... },
+    "food_log": { "YYYY-MM-DD": total_kcal_float, ... },
+    "foods": { "MAIN": {...}, "DESSERT": {...}, "BEVERAGE": {...} }
   }
-  ```
-* **Login** sets `SESSION["current_user"]`. All reads/writes are **per user**.
-* **Linking**:
-
-  * Tab 2’s BMI date comes from Tab 1’s saved dates.
-  * Tab 3’s date must exist in **TDEE records** (Tab 2).
-  * The weekly chart centers on **the chosen Tab 3 date**.
-
----
-
-## User Flow
-
-1. **Login** with a username (creates your in-memory profile).
-2. **Tab 1**: Enter BMI for a date → see it plotted.
-3. **Tab 2**: Pick that BMI date → auto load height/weight → compute & save TDEE.
-4. **Tab 3**: Pick the TDEE date, set a **Goal** → add foods (optional) → select meals → **Log Day Total**.
-   View the **progress bar vs target** and the **7-day chart**.
-
----
-
-## Validations & Guardrails
-
-* **BMI**:
-
-  * Height 100–250 cm, Weight 30–200 kg, BMI 10–70
-  * If out-of-range ⇒ ask *“Is it correct?”* (True/False). Saves only on **True**.
-  * One record per day (duplication blocked).
-* **TDEE**:
-
-  * Age must be **10–80** or confirm **True** when outside.
-  * Missing gender/activity/age/height/weight/date ⇒ **centered** warning popup.
-* **Food Tracker**:
-
-  * Custom foods must have **name**, **type**, **kcal ≥ 0**.
-  * TDEE target = TDEE × goal (0.8/1.0/1.15).
-
----
-
-## UI/UX Details
-
-* **Neon “video-game” theme** via custom CSS.
-* Built-in **toasts repositioned to the center** of the screen.
-* Tab 2 and 3 dropdowns **auto-link** data on change (no “Load” button).
-* Tab 3 shows a **progress bar** and target-aware **7-day chart**.
-
----
-
-## Folder / File
-
-Single file app (example):
-
-```
-app.py
+}
+SESSION = {"current_user": "<username or None>"}
 ```
 
-Run with:
+> ⚠️ **Ephemeral**: data is **not saved** after you stop the app. For persistence, add a DB (e.g., SQLite) later.
 
-```bash
-python app.py
+---
+
+## ✅ Guardrails
+
+* **Height**: 100–250 cm, **Weight**: 30–200 kg, **BMI**: 10–70 → out-of-range asks for confirmation
+* **Age**: 10–80 for TDEE → out-of-range asks for confirmation
+* **One BMI per date** (must clear before re-saving)
+
+---
+
+## 🎨 UI/CSS
+
+* Neon game vibe with custom CSS
+* Centered toasts for better visibility
+* Matplotlib charts saved to temp files and displayed in app
+
+---
+
+## 🧩 Project Layout (suggested)
+
+```
+bme-health-calculator/
+├─ app.py            # this script
+├─ README.md         # this file
+├─ requirements.txt  # optional
+└─ assets/           # screenshots (optional)
 ```
 
 ---
 
-## Customization
+## 🛠️ Troubleshooting
 
-* **Goal multipliers**: edit `compute_target_from_goal()`:
-
-  ```python
-  m = {
-      "Lose (-20%)": 0.80,
-      "Maintenance (0%)": 1.00,
-      "Gain (+15%)": 1.15
-  }
-  ```
-
-* **Default foods**: modify `ensure_user(... "foods": {...})`.
-
-* **Ranges**:
-
-  * BMI tab: edit `ALLOWED` (height/weight/BMI).
-  * TDEE age: change checks in `t2_compute_and_save()`.
-
-* **Theme**: tweak the `CSS` string for colors, borders, or toast position.
+* **Gradio not launching** → verify Python 3.10+, reinstall `gradio==5.49`
+* **Charts not showing** → ensure Matplotlib can write to your temp directory (`/tmp` on Unix)
+* **Data missing** → remember: per-session, in-memory only; log in with the same username during the same run
 
 ---
 
-## Troubleshooting
+## 🗺️ Roadmap (nice next steps)
 
-* **“module 'gradio' has no attribute 'Date'”**
-  This code uses **Textbox** for dates (string `YYYY-MM-DD`) to be compatible with **Gradio 5.49**.
-
-* **Popups not centered**
-  Some Gradio builds change utility classes. Adjust the CSS selector that targets the toast container:
-
-  ```css
-  div[class*="absolute"][class*="top-4"][class*="right-4"] { ... }
-  ```
-
-* **Nothing appears in dropdowns**
-  Make sure you’re **logged in**, then add/save data in the tabs in order (Tab 1 → Tab 2 → Tab 3).
-
-* **Data disappears**
-  That’s expected—storage is **in memory**. To persist, save to a file/DB in the handlers.
+* SQLite persistence for users/logs
+* Macro & micronutrient breakdowns
+* CSV export/import
+* Mobile-first layout tweaks
+* Thai/English UI toggle
 
 ---
 
-## Roadmap Ideas
+## 🔒 Ethics & Privacy
 
-* Persist users/records to a **SQLite/JSON** backend
-* Real **date picker** once stable in your Gradio version
-* Export reports (CSV/PDF)
-* Multi-user auth, sessions, and roles
-* More nutrition fields (protein, fat, carbs) + macro targets
-* Mobile-responsive tweaks & PWA install
+* Do **not** use for diagnosis/treatment.
+* Keep runs local and avoid sharing usernames/data.
 
 ---
 
-## License
+## 📄 License
 
-MIT (or your preferred license). Add a `LICENSE` file if distributing.
+Choose one that fits your needs (e.g., **MIT**).
 
-
+Happy building & analyzing!😁
