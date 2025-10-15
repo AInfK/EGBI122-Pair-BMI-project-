@@ -89,11 +89,14 @@ python app.py   # or your filename
 ## 5) How to Use (Step-by-Step)
 
 ### 0) Login
+![Register Example](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/main/Picture/Tab0.png)
+
 
 1. Enter a **Username** → click **Log in**. (All data is stored under this username during the session.)
 
 
 ### 1) BMI Calculator
+![UI example](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/main/Picture/tab1.png)
 
 1. Select **Metric** or **Imperial**.
 2. Enter **Height**, **Weight**, and **Date** (`YYYY-MM-DD`; default is today).
@@ -104,12 +107,15 @@ python app.py   # or your filename
 5. Inspect the **BMI trend chart** with category bands and annotations.
 
 ### 2) Metabolic Rate (BMR/TDEE)
+![UI example](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/main/Picture/Tab2.png)
 
 1. Choose a **BMI date** (loads height/weight from Tab 1).
 2. Set **Gender**, **Age (10–80)**, **Activity**.
 3. Click **Compute & Save TDEE** → a summary card is saved for that date (used in Tab 3).
 
 ### 3) Food Tracker
+![UI example](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/bc4ac9958e7a5a35e336219037813ee6808e081f/Picture/Tab%203.png)
+![graph example](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/bc4ac9958e7a5a35e336219037813ee6808e081f/Picture/graph%20tab%203.png)
 
 1. Select a **date that has TDEE** from Tab 2.
 2. Choose a **Goal** (Lose/Maintenance/Gain) → the **target kcal** updates automatically.
@@ -164,7 +170,7 @@ python app.py   # or your filename
 ---
 
 ## 8) UI/UX Notes
-
+ ![Fullweb](https://github.com/AInfK/EGBI122-Pair-BMI-project-/blob/main/Picture/graph%20tab%203.png)
 * **Neon “game vibe” theme** for engagement.
 * **BMI plot** includes colored bands for category context.
 * **Food 7-day bar chart** displays numeric labels + target line (from TDEE × goal).
