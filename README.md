@@ -184,6 +184,6 @@ bme-health-calculator/
 
 ## 📄 License
 
-Choose one that fits your needs (e.g., **MIT**).
+This project is using MIT license 
 
 Happy building & analyzing!😁
